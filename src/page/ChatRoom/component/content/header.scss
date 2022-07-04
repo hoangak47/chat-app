@@ -5,6 +5,27 @@
     height: 70px;
     border-bottom: 1px solid var(--border);
 
+    .avatar {
+        display: flex;
+        align-items: center;
+
+        .detail {
+            display: flex;
+            flex-direction: column;
+        }
+
+        span:nth-child(1) {
+            font-size: 1.6rem;
+            font-weight: bold;
+        }
+
+        span:nth-child(2) {
+            font-size: 1.4rem;
+            color: var(--color);
+            font-weight: 400;
+        }
+    }
+
     .header-right {
         display: flex;
         align-items: center;

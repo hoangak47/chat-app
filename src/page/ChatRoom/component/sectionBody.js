@@ -4,7 +4,7 @@ import { AppContext } from '~/context/appProvider';
 import firebase, { auth, db } from '~/firebase/config';
 import useFirestore from '~/hooks/useFirestore';
 
-function SectionBody({ context, navigate }) {
+function SectionBody({ context, navigate, setModal }) {
     const rooms = useContext(AppContext);
 
     return (
@@ -27,6 +27,7 @@ function SectionBody({ context, navigate }) {
                                 context.setRoom(index);
                                 context.setNameRoom(room.name);
                                 context.setAvatarRoom(room.avatarRoom);
+                                context.setDescribeRoom(room.describe);
                             }}
                         >
                             <img className="chat-room-list-item-avatar" src={room.avatarRoom} alt="user" />
@@ -35,7 +36,7 @@ function SectionBody({ context, navigate }) {
                     );
                 })}
             </ul>
-            <button className="add-new-room">
+            <button className="add-new-room" onClick={() => setModal(true)}>
                 <i className="bi bi-plus-circle"></i>
                 <span>Add new room</span>
             </button>

@@ -13,6 +13,8 @@ function StoreProvider({ children }) {
 
     const [avatarRoom, setAvatarRoom] = useState(listRoom[indexRoom]?.avatarRoom);
 
+    const [describeRoom, setDescribeRoom] = useState(listRoom[indexRoom]?.describe);
+
     useEffect(() => {
         setNameRoom(listRoom[indexRoom]?.name);
         setAvatarRoom(listRoom[indexRoom]?.avatarRoom);
@@ -29,6 +31,8 @@ function StoreProvider({ children }) {
         setNameRoom,
         avatarRoom,
         setAvatarRoom,
+        describeRoom,
+        setDescribeRoom,
     };
     return <Context.Provider value={data}>{children}</Context.Provider>;
 }

@@ -7,7 +7,10 @@ function Header({ context }) {
         <div className="chat-room-content-header">
             <div className="avatar">
                 <img src={context.avatarRoom} alt="user" />
-                <span>{context.nameRoom}</span>
+                <div className="detail">
+                    <span>{context.nameRoom}</span>
+                    <span>{context.describeRoom}</span>
+                </div>
             </div>
             <div className="header-right">
                 <i className="bi ic-user-add bi-person-plus"></i>
