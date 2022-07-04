@@ -1,0 +1,51 @@
+@import 'normalize.css';
+
+:root {
+    --white: #fff;
+    --bg-main: #242526;
+    --color: #000;
+    --hover: #b8b8b82a;
+    --hover-secondary: #ffffff1c;
+    --border: #e6e6e6;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html {
+    font-size: 62.5%;
+}
+
+body {
+    font-size: 1.6rem;
+    line-height: 1.5;
+    text-rendering: optimizeLegibility;
+    overflow-y: overlay;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+html *::-webkit-scrollbar {
+    border-radius: 0;
+    width: 8px;
+}
+
+input,
+button,
+[tabindex] {
+    outline: none;
+    border: none;
+}
+
+a[href] {
+    text-decoration: none;
+}
+
+ul,
+li {
+    list-style: none;
+    padding: none;
+    margin: none;
+}

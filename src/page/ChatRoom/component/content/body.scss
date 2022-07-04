@@ -1,0 +1,45 @@
+.chat-room-content-body {
+    height: 100%;
+    overflow-y: overlay;
+
+    .mess {
+        display: flex;
+        margin-top: 15px;
+        max-width: 400px;
+
+        &.me {
+            margin-left: calc(100% - 400px);
+
+            img,
+            .detail {
+                display: none;
+            }
+        }
+    }
+
+    img {
+        width: 33px;
+        height: 33px;
+        border-radius: 50%;
+        margin-right: 10px;
+    }
+
+    .name {
+        font-size: 1.6rem;
+        font-weight: bold;
+        color: var(--color);
+    }
+
+    .time {
+        margin-left: 15px;
+        font-size: 1.2rem;
+        color: var(--color);
+    }
+
+    .mess-text {
+        margin: unset;
+        background-color: var(--hover);
+        padding: 10px;
+        border-radius: 10px;
+    }
+}
