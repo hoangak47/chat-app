@@ -3,7 +3,7 @@ import React, { useContext, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import config from '~/config';
 import Context from '~/context/context';
-import { addDoc } from '~/firebase/services';
+import { addDoc, generateKeywords } from '~/firebase/services';
 import firebase, { auth } from '../../firebase/config';
 
 import './login.scss';
@@ -21,6 +21,7 @@ function Login() {
                 email: user.email,
                 uid: user.uid,
                 provider: additionalUserInfo.providerId,
+                keyword: generateKeywords(user.displayName),
             });
         }
     };
@@ -34,6 +35,7 @@ function Login() {
                 email: user.email,
                 uid: user.uid,
                 provider: additionalUserInfo.providerId,
+                keyword: generateKeywords(user.displayName),
             });
         }
     };

@@ -1,11 +1,10 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import React, { useContext, useEffect, useMemo, useState } from 'react';
+import React, { useContext } from 'react';
 import { AppContext } from '~/context/appProvider';
-import firebase, { auth, db } from '~/firebase/config';
-import useFirestore from '~/hooks/useFirestore';
+import { auth } from '~/firebase/config';
 
-function SectionBody({ context, navigate, setModal }) {
-    const rooms = useContext(AppContext);
+function SectionBody({ context, setModal }) {
+    const appContext = useContext(AppContext);
 
     return (
         <div className="chat-room-section-body">
@@ -16,7 +15,7 @@ function SectionBody({ context, navigate, setModal }) {
                 </div>
             </div>
             <ul className="chat-room-list">
-                {rooms?.map((room, index) => {
+                {appContext.rooms?.map((room, index) => {
                     return (
                         <li
                             key={room.id}

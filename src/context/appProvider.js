@@ -18,11 +18,26 @@ function AppProvider({ children }) {
 
     const rooms = useFirestore('rooms', roomsCondition);
 
+    const userCondition = useMemo(() => {
+        return {
+            fieldName: 'uid',
+            operator: 'in',
+            compareValue: context.listRoom[context.indexRoom]?.members,
+        };
+    }, [context.listRoom[context.indexRoom]?.members]);
+
+    const users = useFirestore('users', userCondition);
+
     useEffect(() => {
         context.setListRoom(rooms);
     }, [rooms]);
 
-    return <AppContext.Provider value={rooms}>{children}</AppContext.Provider>;
+    const data = {
+        rooms,
+        users,
+    };
+
+    return <AppContext.Provider value={data}>{children}</AppContext.Provider>;
 }
 
 export default AppProvider;

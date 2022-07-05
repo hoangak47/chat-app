@@ -15,9 +15,17 @@ function StoreProvider({ children }) {
 
     const [describeRoom, setDescribeRoom] = useState(listRoom[indexRoom]?.describe);
 
+    const [members, setMembers] = useState(listRoom[indexRoom]?.members);
+
+    useEffect(() => {
+        setMembers(listRoom[indexRoom]?.members);
+    }, [indexRoom]);
+
     useEffect(() => {
         setNameRoom(listRoom[indexRoom]?.name);
         setAvatarRoom(listRoom[indexRoom]?.avatarRoom);
+        setMembers(listRoom[indexRoom]?.members);
+        setDescribeRoom(listRoom[indexRoom]?.describe);
     }, [listRoom]);
 
     const data = {
@@ -33,6 +41,8 @@ function StoreProvider({ children }) {
         setAvatarRoom,
         describeRoom,
         setDescribeRoom,
+        members,
+        setMembers,
     };
     return <Context.Provider value={data}>{children}</Context.Provider>;
 }
