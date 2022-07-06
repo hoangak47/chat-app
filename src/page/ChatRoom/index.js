@@ -5,8 +5,10 @@ import config from '~/config';
 import Context from '~/context/context';
 import { addDoc } from '~/firebase/services';
 
-import { Form, Modal, Input, Button, Alert } from 'antd';
-import 'antd/dist/antd.css';
+import { Alert } from 'antd';
+// import 'antd/dist/antd.css';
+
+import 'antd/dist/antd.min.css';
 
 import './chat_room.scss';
 import ChangeTheme from './component/changeTheme';
@@ -17,12 +19,9 @@ import HandleChangeInput from './component/handleChangeInput';
 import SectionBody from './component/sectionBody';
 import SectionHeader from './component/sectionHeader';
 import ModalAdd from './component/modal/modalAdd';
-import { AppContext } from '~/context/appProvider';
 
 const ChatRoom = () => {
     const context = useContext(Context);
-    const { users } = useContext(AppContext);
-    const uid = users[0]?.uid;
     const navigate = useNavigate();
 
     const [theme, setTheme] = useState(false);

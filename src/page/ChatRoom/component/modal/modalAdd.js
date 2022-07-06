@@ -1,6 +1,7 @@
 import { Avatar, Form, Modal, Select, Spin } from 'antd';
 import { debounce } from 'lodash';
-import React, { useMemo, useState } from 'react';
+import React, { useContext, useMemo, useState } from 'react';
+import Context from '~/context/context';
 import { db } from '~/firebase/config';
 
 function DebounceSelect({ fetchOptions, DebounceTimeout = 700, ...props }) {
@@ -12,14 +13,14 @@ function DebounceSelect({ fetchOptions, DebounceTimeout = 700, ...props }) {
             setOptions([]);
             setFetching(true);
 
-            fetchOptions(value).then((newOptions) => {
+            fetchOptions(value, props.currMembers).then((newOptions) => {
                 setOptions(newOptions);
                 setFetching(false);
             });
         };
 
         return debounce(loadingOptions, DebounceTimeout);
-    }, [fetchOptions, DebounceTimeout]);
+    }, [fetchOptions, DebounceTimeout, props.currMembers]);
 
     return (
         <Select
@@ -43,30 +44,40 @@ function DebounceSelect({ fetchOptions, DebounceTimeout = 700, ...props }) {
     );
 }
 
-async function fetchUserList(search) {
+async function fetchUserList(search, currMembers) {
     return db
         .collection('users')
         .where('keyword', 'array-contains', search)
         .orderBy('displayName')
         .get()
         .then((snapshot) => {
-            return snapshot.docs.map((doc) => {
-                const a = {
-                    label: doc.data().displayName,
-                    value: doc.data().uid,
-                    avatar: doc.data().photoURL,
-                };
-                return a;
-            });
+            return snapshot.docs
+                .map((doc) => {
+                    console.log(doc.data());
+                    const a = {
+                        label: doc.data().displayName,
+                        value: doc.data().uid,
+                        avatar: doc.data().photoURL,
+                    };
+                    return a;
+                })
+                .filter((v) => !currMembers.includes(v.value));
         });
 }
 
 function ModalAdd({ modalAdd, setModalAdd }) {
+    const context = useContext(Context);
     const [value, setValue] = useState([]);
     const [form] = Form.useForm();
 
     const handleOk = () => {
+        const roomRef = db.collection('rooms').doc(context.listRoom[context.indexRoom].id);
+        roomRef.update({
+            members: [...context.listRoom[context.indexRoom].members, ...value.map((v) => v.value)],
+        });
         setModalAdd(false);
+        setValue([]);
+        form.resetFields();
     };
 
     const handleCancel = () => {
@@ -95,6 +106,7 @@ function ModalAdd({ modalAdd, setModalAdd }) {
                         setValue(newValue);
                     }}
                     style={{ width: '100%' }}
+                    currMembers={context.listRoom[context.indexRoom]?.members}
                 ></DebounceSelect>
             </Form>
         </Modal>

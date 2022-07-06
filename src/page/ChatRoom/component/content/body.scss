@@ -5,14 +5,24 @@
     .mess {
         display: flex;
         margin-top: 15px;
-        max-width: 400px;
 
         &.me {
-            margin-left: calc(100% - 400px);
+            justify-content: end;
 
             img,
-            .detail {
+            .name,
+            .messImg {
                 display: none;
+            }
+
+            .mess-text {
+                background-color: var(--hover);
+                color: var(--color);
+            }
+
+            .text {
+                display: flex;
+                justify-content: flex-end;
             }
         }
     }
@@ -24,6 +34,11 @@
         margin-right: 10px;
     }
 
+    .detail {
+        display: flex;
+        flex-direction: column;
+    }
+
     .name {
         font-size: 1.6rem;
         font-weight: bold;
@@ -31,15 +46,20 @@
     }
 
     .time {
-        margin-left: 15px;
         font-size: 1.2rem;
         color: var(--color);
     }
 
+    .mess-content {
+        max-width: 40%;
+    }
+
     .mess-text {
+        color: #e1e1e1;
         margin: unset;
-        background-color: var(--hover);
+        background-color: #0084ff;
         padding: 10px;
         border-radius: 10px;
+        width: fit-content;
     }
 }

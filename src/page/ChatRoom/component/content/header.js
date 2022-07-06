@@ -1,3 +1,4 @@
+import { Avatar, Tooltip } from 'antd';
 import React, { useContext } from 'react';
 import { AppContext } from '~/context/appProvider';
 
@@ -21,26 +22,31 @@ function Header({ context, setModalAdd }) {
                         ? appContext.users.slice(0, 2).map((room, index) => {
                               return (
                                   <li key={index}>
-                                      <div className="user-list-item">
-                                          <img src={room.photoURL} alt="user" />
-                                      </div>
+                                      <Tooltip title={appContext.users[index].displayName} placement="bottom">
+                                          <Avatar style={{ marginLeft: 'unset' }} size="large" src={room.photoURL}>
+                                              {!room.photoURL &&
+                                                  appContext.users[index].displayName.charAt(0)?.toUpperCase()}
+                                          </Avatar>
+                                      </Tooltip>
                                   </li>
                               );
                           })
                         : appContext.users.map((room, index) => {
                               return (
                                   <li key={index}>
-                                      {room.photoURL ? (
-                                          <div className="user-list-item">
-                                              <img src={room.photoURL} alt="user" />
-                                          </div>
+                                      <Tooltip title={appContext.users[index].displayName} placement="bottom">
+                                          <Avatar style={{ marginLeft: 'unset' }} size="default" src={room.photoURL}>
+                                              {!room.photoURL &&
+                                                  appContext.users[index].displayName.charAt(0)?.toUpperCase()}
+                                          </Avatar>
+                                      </Tooltip>
+                                      {/* {room.photoURL ? (
+                                          
                                       ) : (
                                           <div className="user-list-item more">
-                                              <span>
-                                                  {context.user && context.user.displayName.charAt(0).toUpperCase()}
-                                              </span>
+                                              <span>{context.user && context.user.displayName}</span>
                                           </div>
-                                      )}
+                                      )} */}
                                   </li>
                               );
                           })}
@@ -53,8 +59,18 @@ function Header({ context, setModalAdd }) {
                                         return (
                                             <li key={index}>
                                                 <div className="user-list-item">
-                                                    <img src={room.photoURL} alt="user" />
-                                                    <span>{room.displayName}</span>
+                                                    <Avatar
+                                                        style={{ marginLeft: 'unset' }}
+                                                        size="default"
+                                                        src={room.photoURL}
+                                                    >
+                                                        {!room.photoURL &&
+                                                            appContext.users[index + 2].displayName
+                                                                .charAt(0)
+                                                                ?.toUpperCase()}
+                                                    </Avatar>
+
+                                                    <span>{appContext.users[index + 2].displayName}</span>
                                                 </div>
                                             </li>
                                         );
@@ -63,43 +79,6 @@ function Header({ context, setModalAdd }) {
                             </div>
                         </li>
                     )}
-                    {/* {appContext.users?.map((room, index) => {
-                        return (
-                            <li key={index}>
-                                <div className="user-list-item">
-                                    <img src={room.photoURL} alt="user" />
-                                </div>
-                            </li>
-                        );
-                    })} */}
-                    {/* {context.listRoom[context.indexRoom - 1].users.slice(0, 2).map((room, index) => {
-                        return (
-                            <li key={index}>
-                                <div className="user-list-item">
-                                    <img src={room.avatar} alt="user" />
-                                </div>
-                            </li>
-                        );
-                    })}
-                    {context.listRoom[context.indexRoom - 1].users.length > 2 && (
-                        <li>
-                            <div className="user-list-item more">
-                                <span>+{context.listRoom[context.indexRoom - 1].users.length - 2}</span>
-                                <ul className="more-users">
-                                    {context.listRoom[context.indexRoom - 1].users.slice(2).map((room, index) => {
-                                        return (
-                                            <li key={index}>
-                                                <div className="user-list-item">
-                                                    <img src={room.avatar} alt="user" />
-                                                    <span>{room.name}</span>
-                                                </div>
-                                            </li>
-                                        );
-                                    })}
-                                </ul>
-                            </div>
-                        </li>
-                    )} */}
                 </ul>
             </div>
         </div>

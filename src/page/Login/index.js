@@ -14,6 +14,7 @@ function Login() {
 
     const handleLoginFacebook = async () => {
         const { additionalUserInfo, user } = await auth.signInWithPopup(new firebase.auth.FacebookAuthProvider());
+        console.log(additionalUserInfo);
         if (additionalUserInfo.isNewUser) {
             addDoc('users', {
                 displayName: user.displayName,

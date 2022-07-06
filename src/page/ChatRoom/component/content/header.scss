@@ -41,11 +41,11 @@
 }
 
 .user-list-item.more {
+    border: 1px solid var(--border);
+    background-color: var(--hover);
     display: flex;
     align-items: center;
     justify-content: center;
-    border: 1px solid var(--border);
-    background-color: var(--hover);
     width: 40px;
     height: 40px;
     border-radius: 50%;
@@ -120,13 +120,11 @@
     margin-bottom: unset;
     padding-left: unset;
 
-    img {
-        width: 40px;
-        height: 40px;
-        border-radius: 50%;
-    }
-
     li {
         margin-left: 5px;
     }
+}
+
+.user-list-item.more .more-users span {
+    margin-left: unset;
 }
