@@ -1,8 +1,10 @@
-import React, { useContext, useRef } from 'react';
+import React, { useContext, useRef, useState } from 'react';
 import Context from '~/context/context';
 import { addDoc } from '~/firebase/services';
+import Picker from 'emoji-picker-react';
 
 import './footer.scss';
+import { message } from 'antd';
 
 function Footer() {
     const context = useContext(Context);
@@ -27,15 +29,24 @@ function Footer() {
             setInputValue('');
             input.current.focus();
             input.current.value = '';
+            setShowEmoji(false);
         } else {
-            alert('Please enter message');
+            message.info('Please enter message', 2);
         }
+    };
+
+    const [showEmoji, setShowEmoji] = useState(false);
+
+    const onEmojiClick = (event, emojiObject) => {
+        // console.log(emojiObject.emoji);
+        setInputValue(inputValue + emojiObject.emoji);
     };
 
     return (
         <div className="chat-room-content-footer">
             <div className="footer-input">
                 <input
+                    value={inputValue}
                     ref={input}
                     type="text"
                     placeholder="Type a message..."
@@ -46,7 +57,18 @@ function Footer() {
                         }
                     }}
                 />
-                <i className="bi ic-emoji bi-emoji-smile-fill"></i>
+                <i
+                    className="bi ic-emoji bi-emoji-smile-fill"
+                    onClick={() => {
+                        input.current.focus();
+                        setShowEmoji(!showEmoji);
+                    }}
+                ></i>
+                {showEmoji && (
+                    <div style={{ position: 'absolute', bottom: '150%', right: '0' }}>
+                        <Picker onEmojiClick={onEmojiClick} />
+                    </div>
+                )}
             </div>
             <button className="send" onClick={(e) => handleSubmit(e)}>
                 <i className="bi ic-send bi-send"></i>

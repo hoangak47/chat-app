@@ -1,0 +1,58 @@
+.modal-add-room {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 100vh;
+    background-color: #00000087;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    transition: all 0.3s ease-in-out;
+
+    &.hide {
+        // display: none;
+        top: 100%;
+    }
+
+    .content {
+        width: 40%;
+        height: 70%;
+        background-color: var(--hover);
+        color: var(--color);
+        display: flex;
+        flex-direction: column;
+        position: absolute;
+        padding: 10px;
+        border-radius: 10px;
+        transition: all 0.3s ease-in-out;
+    }
+
+    .ic-close {
+        position: absolute;
+        color: var(--color);
+        top: 10px;
+        right: 10px;
+        font-size: 2rem;
+        cursor: pointer;
+    }
+
+    .title {
+        font-size: 2rem;
+        width: 100%;
+        text-align: center;
+        margin-bottom: 50px;
+        font-weight: bold;
+    }
+
+    form {
+        display: flex;
+        flex-direction: column;
+        height: 100%;
+
+        .form {
+            height: 100%;
+        }
+    }
+}

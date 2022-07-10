@@ -13,16 +13,12 @@ function Body() {
         return {
             fieldName: 'roomId',
             operator: '==',
-            compareValue: context.listRoom[context.indexRoom].id,
+            compareValue: context.listRoom[context.indexRoom]?.id,
         };
     }, [context.indexRoom, context.listRoom]);
 
     const message = useFirestore('messages', condition);
-    const body = useRef(null);
-
-    useEffect(() => {
-        console.log(body);
-    }, [message]);
+    const lastText = useRef('');
 
     const formatTime = (time) => {
         let formatDate = '';
@@ -35,20 +31,33 @@ function Body() {
         return formatDate;
     };
 
+    const body = useRef(null);
+
+    useEffect(() => {
+        body?.current.scrollTo({ top: body.current?.lastChild?.offsetTop });
+    }, [message]);
+
     return (
         <div ref={body} className="chat-room-content-body">
-            {message.map((item, index) => {
-                return (
-                    <Message
-                        key={index}
-                        img={item.photoURL}
-                        name={item.displayName}
-                        mess={item.content}
-                        time={formatTime(item.createdAt?.seconds)}
-                        id={item.uid}
-                    />
-                );
-            })}
+            {message.length !== 0 ? (
+                message.map((item, index) => {
+                    return (
+                        <Message
+                            key={index}
+                            img={item.photoURL}
+                            name={item.displayName}
+                            mess={item.content}
+                            time={formatTime(item.createdAt?.seconds)}
+                            id={item.uid}
+                            lastText={message.length - 1 === index ? lastText : null}
+                        />
+                    );
+                })
+            ) : (
+                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', height: '100%' }}>
+                    <h1 style={{ color: 'var(--color)' }}>Let's start chatting</h1>
+                </div>
+            )}
         </div>
     );
 }

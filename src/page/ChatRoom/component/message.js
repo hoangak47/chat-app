@@ -4,10 +4,10 @@ import Context from '~/context/context';
 
 import './content/body.scss';
 
-function Message({ img, name, mess, time, id }) {
+function Message({ img, name, mess, time, id, lastText }) {
     const context = useContext(Context);
     return (
-        <div className={context.user && id === context.user.uid ? 'mess me' : 'mess'}>
+        <div ref={lastText ? lastText : null} className={context.user && id === context.user.uid ? 'mess me' : 'mess'}>
             {img ? (
                 <img className="messImg" src={img} alt="avatar" />
             ) : (

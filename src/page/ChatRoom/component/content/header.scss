@@ -98,7 +98,8 @@
         height: 20px;
     }
 
-    &:hover .more-users {
+    &:hover .more-users,
+    .more-users.active {
         opacity: 1;
         visibility: visible;
     }
@@ -122,6 +123,7 @@
 
     li {
         margin-left: 5px;
+        cursor: pointer;
     }
 }
 

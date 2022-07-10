@@ -1,10 +1,10 @@
-import { Avatar, Form, Modal, Select, Spin } from 'antd';
+import { Avatar, Form, message, Modal, Select, Spin } from 'antd';
 import { debounce } from 'lodash';
 import React, { useContext, useMemo, useState } from 'react';
 import Context from '~/context/context';
 import { db } from '~/firebase/config';
 
-function DebounceSelect({ fetchOptions, DebounceTimeout = 700, ...props }) {
+function DebounceSelect({ fetchOptions, DebounceTimeout = 700, currMembers, ...props }) {
     const [fetching, setFetching] = useState(false);
     const [options, setOptions] = useState([]);
 
@@ -13,14 +13,14 @@ function DebounceSelect({ fetchOptions, DebounceTimeout = 700, ...props }) {
             setOptions([]);
             setFetching(true);
 
-            fetchOptions(value, props.currMembers).then((newOptions) => {
+            fetchOptions(value, currMembers).then((newOptions) => {
                 setOptions(newOptions);
                 setFetching(false);
             });
         };
 
         return debounce(loadingOptions, DebounceTimeout);
-    }, [fetchOptions, DebounceTimeout, props.currMembers]);
+    }, [fetchOptions, DebounceTimeout, currMembers]);
 
     return (
         <Select
@@ -53,7 +53,6 @@ async function fetchUserList(search, currMembers) {
         .then((snapshot) => {
             return snapshot.docs
                 .map((doc) => {
-                    console.log(doc.data());
                     const a = {
                         label: doc.data().displayName,
                         value: doc.data().uid,
@@ -78,6 +77,7 @@ function ModalAdd({ modalAdd, setModalAdd }) {
         setModalAdd(false);
         setValue([]);
         form.resetFields();
+        message.success('Invite success');
     };
 
     const handleCancel = () => {
@@ -102,7 +102,6 @@ function ModalAdd({ modalAdd, setModalAdd }) {
                     placeholder="Nhập tên thành viên"
                     fetchOptions={fetchUserList}
                     onChange={(newValue) => {
-                        console.log(newValue);
                         setValue(newValue);
                     }}
                     style={{ width: '100%' }}

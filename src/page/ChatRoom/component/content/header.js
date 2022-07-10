@@ -1,85 +1,116 @@
-import { Avatar, Tooltip } from 'antd';
+import { Avatar, message, Popconfirm, Tooltip } from 'antd';
 import React, { useContext } from 'react';
 import { AppContext } from '~/context/appProvider';
+import { db } from '~/firebase/config';
 
 import './header.scss';
 
 function Header({ context, setModalAdd }) {
     const appContext = useContext(AppContext);
+
+    const confirm = (meid, uid, memberID) => {
+        if (meid) {
+            const userRef = db.collection('users').doc(appContext.infoUsers[0].id);
+
+            userRef.update({
+                friend: [...appContext.infoUsers[0].friend, uid],
+            });
+
+            const friendRef = db.collection('users').doc(memberID);
+
+            const infoFriendRef = db.collection('users').where('uid', '==', uid);
+            infoFriendRef.get().then((snapshot) => {
+                snapshot.forEach((doc) => {
+                    friendRef.update({
+                        friend: [...doc.data().friend, meid],
+                    });
+                });
+            });
+
+            message.success('Make friend success');
+        }
+    };
     return (
         <div className="chat-room-content-header">
             <div className="avatar">
-                <img src={context.avatarRoom} alt="user" />
+                <Avatar
+                    size={'large'}
+                    style={{ marginRight: '10px' }}
+                    src={
+                        context.listRoom[context.indexRoom]?.type === 'friend'
+                            ? context.user.displayName === context.listRoom[context.indexRoom]?.nameCreate
+                                ? context.listRoom[context.indexRoom]?.avatarRoom
+                                : context.listRoom[context.indexRoom]?.avatarRoomCreate
+                            : context.listRoom[context.indexRoom]?.avatarRoom
+                    }
+                >
+                    {context.avatarRoom ? '' : context.nameRoom?.charAt(0)?.toUpperCase()}
+                </Avatar>
                 <div className="detail">
-                    <span>{context.nameRoom}</span>
-                    <span>{context.describeRoom}</span>
+                    <span>
+                        {context.listRoom[context.indexRoom]?.type === 'friend'
+                            ? context.listRoom[context.indexRoom]?.nameCreate === context.user.displayName
+                                ? context.listRoom[context.indexRoom]?.name
+                                : context.listRoom[context.indexRoom]?.nameCreate
+                            : context.listRoom[context.indexRoom]?.name}
+                    </span>
                 </div>
             </div>
             <div className="header-right">
-                <i className="bi ic-user-add bi-person-plus" onClick={() => setModalAdd(true)}></i>
-                <ul className="user-list">
-                    {appContext.users && appContext.users.length > 2
-                        ? appContext.users.slice(0, 2).map((room, index) => {
-                              return (
-                                  <li key={index}>
-                                      <Tooltip title={appContext.users[index].displayName} placement="bottom">
-                                          <Avatar style={{ marginLeft: 'unset' }} size="large" src={room.photoURL}>
-                                              {!room.photoURL &&
-                                                  appContext.users[index].displayName.charAt(0)?.toUpperCase()}
-                                          </Avatar>
-                                      </Tooltip>
-                                  </li>
-                              );
-                          })
-                        : appContext.users.map((room, index) => {
-                              return (
-                                  <li key={index}>
-                                      <Tooltip title={appContext.users[index].displayName} placement="bottom">
-                                          <Avatar style={{ marginLeft: 'unset' }} size="default" src={room.photoURL}>
-                                              {!room.photoURL &&
-                                                  appContext.users[index].displayName.charAt(0)?.toUpperCase()}
-                                          </Avatar>
-                                      </Tooltip>
-                                      {/* {room.photoURL ? (
-                                          
-                                      ) : (
-                                          <div className="user-list-item more">
-                                              <span>{context.user && context.user.displayName}</span>
-                                          </div>
-                                      )} */}
-                                  </li>
-                              );
-                          })}
-                    {appContext.users?.length > 2 && (
-                        <li>
-                            <div className="user-list-item more">
-                                <span>+{appContext.users?.length - 2}</span>
-                                <ul className="more-users">
-                                    {appContext.users?.slice(2).map((room, index) => {
-                                        return (
-                                            <li key={index}>
-                                                <div className="user-list-item">
-                                                    <Avatar
-                                                        style={{ marginLeft: 'unset' }}
-                                                        size="default"
-                                                        src={room.photoURL}
-                                                    >
-                                                        {!room.photoURL &&
-                                                            appContext.users[index + 2].displayName
-                                                                .charAt(0)
-                                                                ?.toUpperCase()}
+                {context.listRoom[context.indexRoom]?.type !== 'friend' && (
+                    <i className="bi ic-user-add bi-person-plus" onClick={() => setModalAdd(true)}></i>
+                )}
+                <Avatar.Group
+                    maxPopoverPlacement="bottom"
+                    size="large"
+                    maxCount={2}
+                    maxStyle={{ color: '#f56a00', backgroundColor: '#fde3cf' }}
+                >
+                    {appContext.users.map((member, index) => {
+                        return (
+                            <div key={index}>
+                                {member.uid === appContext.infoUsers[0]?.uid ? (
+                                    <Tooltip placement="left" title="You">
+                                        <Avatar style={{ cursor: 'pointer' }} src={member.photoURL}>
+                                            {member.photoURL ? '' : member.displayName?.charAt(0)?.toUpperCase()}
+                                        </Avatar>
+                                    </Tooltip>
+                                ) : (
+                                    <>
+                                        {appContext.infoUsers[0]?.friend.includes(member.uid) ? (
+                                            <Tooltip placement="left" title={`${appContext.users[index].displayName}`}>
+                                                <Avatar style={{ cursor: 'pointer' }} src={member.photoURL}>
+                                                    {member.photoURL
+                                                        ? ''
+                                                        : member.displayName?.charAt(0)?.toUpperCase()}
+                                                </Avatar>
+                                            </Tooltip>
+                                        ) : (
+                                            <Popconfirm
+                                                placement="leftBottom"
+                                                title={`Do you want to make friends with ${appContext.users[index].displayName} ?`}
+                                                onConfirm={() => confirm(context.user.uid, member.uid, member.id)}
+                                                okText="Yes"
+                                                cancelText="No"
+                                            >
+                                                <Tooltip
+                                                    placement="left"
+                                                    title={`${appContext.users[index].displayName}`}
+                                                >
+                                                    <Avatar style={{ cursor: 'pointer' }} src={member.photoURL}>
+                                                        {member.photoURL
+                                                            ? ''
+                                                            : member.displayName?.charAt(0)?.toUpperCase()}
                                                     </Avatar>
-
-                                                    <span>{appContext.users[index + 2].displayName}</span>
-                                                </div>
-                                            </li>
-                                        );
-                                    })}
-                                </ul>
+                                                </Tooltip>
+                                            </Popconfirm>
+                                        )}
+                                    </>
+                                )}
                             </div>
-                        </li>
-                    )}
-                </ul>
+                        );
+                    })}
+                </Avatar.Group>
             </div>
         </div>
     );
