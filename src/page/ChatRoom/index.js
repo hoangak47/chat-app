@@ -11,13 +11,14 @@ import 'antd/dist/antd.min.css';
 
 import './chat_room.scss';
 import ChangeTheme from './component/changeTheme';
-import Body from './component/content/body';
-import Footer from './component/content/footer';
-import Header from './component/content/header';
+import Body from './component/content/body/body';
+import Footer from './component/content/footer/footer';
+import Header from './component/content/header/header';
 import SectionBody from './component/nav/sectionBody';
 import SectionHeader from './component/nav/sectionHeader';
-import ModalAdd from '../modal/modalAdd';
-import ModalAddRoom from '../modal/modalAddRoom';
+import ModalAdd from '../modal/modalAddFriend/modalAdd';
+import ModalAddRoom from '../modal/modalAddRoom/modalAddRoom';
+import Info from './component/content/info/info';
 
 const ChatRoom = () => {
     const context = useContext(Context);
@@ -56,6 +57,7 @@ const ChatRoom = () => {
                     closable
                 />
             )}
+            <Info />
 
             <ModalAddRoom modal={context.modal} setModal={context.setModal} />
 

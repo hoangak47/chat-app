@@ -1,0 +1,164 @@
+.info-room {
+    width: 30%;
+    height: 100vh;
+    padding: 20px 10px 5px;
+    border-left: 1px solid var(--border);
+    display: flex;
+    flex-direction: column;
+
+    .info-room-header {
+        width: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-bottom: 30px;
+
+        h1 {
+            color: var(--color);
+            font-size: 2.2rem;
+        }
+    }
+
+    .avatar {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+    }
+
+    .avatar img,
+    .ant-avatar-lg {
+        width: 100px;
+        height: 100px;
+    }
+
+    .detail span {
+        font-size: 2rem;
+        font-weight: 500;
+        color: var(--color);
+    }
+}
+
+.info-room-body {
+    overflow-y: overlay;
+    user-select: none;
+    flex: 1;
+
+    .list-control-info h3 {
+        color: var(--color);
+        font-size: 1.6rem;
+    }
+
+    .title {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 8px 20px 8px 10px;
+        border-radius: 5px;
+        transition: all 0.3s ease-in-out;
+        cursor: pointer;
+
+        &:hover {
+            background-color: var(--hover);
+        }
+    }
+
+    .list {
+        height: 0;
+        overflow: hidden;
+        opacity: 0;
+
+        transition: all 0.5s ease-in-out;
+        overflow-y: overlay;
+
+        &.active {
+            height: unset;
+            opacity: 1;
+        }
+    }
+
+    .item {
+        padding: 5px 0;
+        cursor: pointer;
+        position: relative;
+
+        &:hover {
+            background-color: var(--hover);
+        }
+
+        &:hover .modal-add-friend {
+            display: flex;
+        }
+
+        .modal-add-friend {
+            display: none;
+            align-items: center;
+            justify-content: center;
+            position: absolute;
+            color: var(--color);
+            border-radius: 5px;
+
+            top: 0;
+            bottom: 0;
+            right: 0;
+            left: 0;
+            background-color: var(--hover);
+        }
+    }
+
+    .friend {
+        &:hover {
+            background-color: var(--hover);
+        }
+    }
+
+    .ic-custom {
+        font-size: 2.5rem;
+        margin-right: 10px;
+    }
+}
+
+.checkEditName {
+    cursor: pointer;
+}
+
+.edit-name {
+    display: none;
+    width: 100%;
+    margin-top: 10px;
+    color: var(--color);
+    caret-color: var(--color);
+    background-color: var(--hover);
+    border: 1px solid var(--border);
+    padding: 5px;
+    border-radius: 5px;
+    margin-bottom: 5px;
+
+    transition: all 0.3s ease-in-out;
+}
+
+#checkEditName,
+.box-btn,
+#filePicker {
+    display: none;
+}
+
+#checkEditName:checked ~ .edit-name,
+#checkEditName:checked ~ .box-btn,
+#checkEditName:checked ~ .btn-change-img {
+    display: flex;
+}
+
+.btn-cancel {
+    margin-left: 10px;
+}
+
+.label {
+    display: flex;
+    cursor: pointer;
+}
+
+.upload-img {
+    display: flex;
+    margin-top: 5px;
+}

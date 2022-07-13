@@ -2,7 +2,7 @@ import { formatRelative } from 'date-fns';
 import React, { useContext, useEffect, useMemo, useRef } from 'react';
 import Context from '~/context/context';
 import useFirestore from '~/hooks/useFirestore';
-import Message from '../message';
+import Message from '../../message';
 
 import './body.scss';
 
@@ -44,12 +44,13 @@ function Body() {
                     return (
                         <Message
                             key={index}
-                            img={item.photoURL}
+                            avatar={item.photoURL}
                             name={item.displayName}
                             mess={item.content}
                             time={formatTime(item.createdAt?.seconds)}
                             id={item.uid}
                             lastText={message.length - 1 === index ? lastText : null}
+                            img={item.img}
                         />
                     );
                 })

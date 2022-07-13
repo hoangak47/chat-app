@@ -2,17 +2,17 @@ import { Avatar } from 'antd';
 import React, { useContext } from 'react';
 import Context from '~/context/context';
 
-import './content/body.scss';
+import './content/body/body.scss';
 
-function Message({ img, name, mess, time, id, lastText }) {
+function Message({ avatar, name, mess, time, id, lastText, img }) {
     const context = useContext(Context);
     return (
         <div ref={lastText ? lastText : null} className={context.user && id === context.user.uid ? 'mess me' : 'mess'}>
-            {img ? (
-                <img className="messImg" src={img} alt="avatar" />
+            {avatar ? (
+                <img className="messImg" src={avatar} alt="avatar" />
             ) : (
                 <Avatar className="messImg" style={{ marginLeft: 'unset' }} size="default">
-                    {!img && name.charAt(0)?.toUpperCase()}
+                    {!avatar && name.charAt(0)?.toUpperCase()}
                 </Avatar>
             )}
             <div className="mess-content">
@@ -21,7 +21,8 @@ function Message({ img, name, mess, time, id, lastText }) {
                     <span className="time">{time}</span>
                 </div>
                 <div className="text">
-                    <p className="mess-text">{mess}</p>
+                    {mess && <p className="mess-text">{mess}</p>}
+                    {img && <img className="img-chat" alt="img" src={img} />}
                 </div>
             </div>
         </div>

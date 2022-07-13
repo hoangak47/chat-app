@@ -1,0 +1,13 @@
+.alert-modal-add-members {
+    position: absolute;
+    right: -1000px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 1001;
+    max-width: 40%;
+}
+
+.ant-alert-content .ant-alert-message {
+    font-weight: bold;
+    font-size: 2.2rem;
+}

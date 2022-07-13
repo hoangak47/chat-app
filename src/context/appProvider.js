@@ -38,8 +38,6 @@ function AppProvider({ children }) {
 
     const infoUsers = useFirestore('users', infoUserCondition);
 
-    // ------------------test------------------
-
     const userRef = useFirestore('users');
 
     useEffect(() => {

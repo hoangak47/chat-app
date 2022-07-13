@@ -1,6 +1,7 @@
 .chat-room-content-body {
-    height: 100%;
+    flex: 1;
     overflow-y: overlay;
+    overflow-x: hidden;
 
     .mess {
         display: flex;
@@ -9,7 +10,6 @@
         &.me {
             justify-content: end;
 
-            img,
             .name,
             .messImg {
                 display: none;
@@ -20,11 +20,20 @@
                 color: var(--color);
             }
 
-            .text {
-                display: flex;
-                justify-content: flex-end;
+            .text,
+            .mess-content {
+                text-align: -webkit-right;
             }
         }
+    }
+
+    .img-chat {
+        width: 100%;
+        height: 100%;
+        max-height: 300px;
+        object-fit: cover;
+        border-radius: 5px;
+        margin-top: 10px;
     }
 
     img {
@@ -57,7 +66,7 @@
     .mess-text {
         color: #e1e1e1;
         margin: unset;
-        background-color: #0084ff;
+        background-color: var(--color-secondary);
         padding: 10px;
         border-radius: 10px;
         width: fit-content;

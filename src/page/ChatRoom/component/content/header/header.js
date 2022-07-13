@@ -1,35 +1,12 @@
-import { Avatar, message, Popconfirm, Tooltip } from 'antd';
+import { Avatar } from 'antd';
 import React, { useContext } from 'react';
 import { AppContext } from '~/context/appProvider';
-import { db } from '~/firebase/config';
 
 import './header.scss';
 
 function Header({ context, setModalAdd }) {
     const appContext = useContext(AppContext);
 
-    const confirm = (meid, uid, memberID) => {
-        if (meid) {
-            const userRef = db.collection('users').doc(appContext.infoUsers[0].id);
-
-            userRef.update({
-                friend: [...appContext.infoUsers[0].friend, uid],
-            });
-
-            const friendRef = db.collection('users').doc(memberID);
-
-            const infoFriendRef = db.collection('users').where('uid', '==', uid);
-            infoFriendRef.get().then((snapshot) => {
-                snapshot.forEach((doc) => {
-                    friendRef.update({
-                        friend: [...doc.data().friend, meid],
-                    });
-                });
-            });
-
-            message.success('Make friend success');
-        }
-    };
     return (
         <div className="chat-room-content-header">
             <div className="avatar">
@@ -38,7 +15,7 @@ function Header({ context, setModalAdd }) {
                     style={{ marginRight: '10px' }}
                     src={
                         context.listRoom[context.indexRoom]?.type === 'friend'
-                            ? context.user.displayName === context.listRoom[context.indexRoom]?.nameCreate
+                            ? context.listRoom[context.indexRoom]?.members[1] === context.user.uid
                                 ? context.listRoom[context.indexRoom]?.avatarRoom
                                 : context.listRoom[context.indexRoom]?.avatarRoomCreate
                             : context.listRoom[context.indexRoom]?.avatarRoom
@@ -49,7 +26,7 @@ function Header({ context, setModalAdd }) {
                 <div className="detail">
                     <span>
                         {context.listRoom[context.indexRoom]?.type === 'friend'
-                            ? context.listRoom[context.indexRoom]?.nameCreate === context.user.displayName
+                            ? context.listRoom[context.indexRoom]?.members[1] === context.user.uid
                                 ? context.listRoom[context.indexRoom]?.name
                                 : context.listRoom[context.indexRoom]?.nameCreate
                             : context.listRoom[context.indexRoom]?.name}
@@ -69,7 +46,12 @@ function Header({ context, setModalAdd }) {
                     {appContext.users.map((member, index) => {
                         return (
                             <div key={index}>
-                                {member.uid === appContext.infoUsers[0]?.uid ? (
+                                <div key={index}>
+                                    <Avatar style={{ cursor: 'pointer' }} src={member.photoURL}>
+                                        {member.photoURL ? '' : member.displayName?.charAt(0)?.toUpperCase()}
+                                    </Avatar>
+                                </div>
+                                {/* {member.uid === appContext.infoUsers[0]?.uid ? (
                                     <Tooltip placement="left" title="You">
                                         <Avatar style={{ cursor: 'pointer' }} src={member.photoURL}>
                                             {member.photoURL ? '' : member.displayName?.charAt(0)?.toUpperCase()}
@@ -106,7 +88,7 @@ function Header({ context, setModalAdd }) {
                                             </Popconfirm>
                                         )}
                                     </>
-                                )}
+                                )} */}
                             </div>
                         );
                     })}

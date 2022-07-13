@@ -3,6 +3,7 @@ import firebase from 'firebase/compat/app';
 import 'firebase/compat/analytics';
 import 'firebase/compat/auth';
 import 'firebase/compat/firestore';
+import 'firebase/compat/storage';
 
 const firebaseConfig = {
     apiKey: 'AIzaSyAt22WYD0DfpY5WDNLLzdruE1Apn1bA3q4',
@@ -20,11 +21,12 @@ firebase.analytics();
 
 const auth = firebase.auth();
 const db = firebase.firestore();
+const storage = firebase.storage();
 
 // if (window.location.hostname === 'localhost') {
 //     auth.useEmulator('http://localhost:9099');
 //     db.useEmulator('localhost', '8080');
 // }
 
-export { auth, db };
+export { auth, db, storage };
 export default firebase;

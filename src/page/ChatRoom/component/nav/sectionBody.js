@@ -1,12 +1,9 @@
 /* eslint-disable array-callback-return */
 /* eslint-disable react-hooks/exhaustive-deps */
-import { message } from 'antd';
 import React, { useContext, useState } from 'react';
 import { AppContext } from '~/context/appProvider';
-import { auth, db } from '~/firebase/config';
+import { auth } from '~/firebase/config';
 import { addDoc } from '~/firebase/services';
-
-import _ from 'lodash';
 
 import './nav.scss';
 
@@ -42,8 +39,8 @@ function SectionBody({ context, setModal }) {
             <ul className="chat-room-list">
                 {tabActive === 0 ? (
                     <>
-                        {appContext.rooms.length !== 0 ? (
-                            appContext.rooms.map((room, index) => {
+                        {context.listRoom.length !== 0 ? (
+                            context.listRoom.map((room, index) => {
                                 return (
                                     <li
                                         key={room.id}
@@ -60,7 +57,7 @@ function SectionBody({ context, setModal }) {
                                             className="chat-room-list-item-avatar"
                                             src={
                                                 room.type === 'friend'
-                                                    ? room.nameCreate === context.user.displayName
+                                                    ? room.members[1] === context.user.uid
                                                         ? room.avatarRoom
                                                         : room.avatarRoomCreate
                                                     : room.avatarRoom
@@ -69,7 +66,7 @@ function SectionBody({ context, setModal }) {
                                         />
                                         <span className="chat-room-list-item-name ">
                                             {room.type === 'friend'
-                                                ? room.nameCreate === context.user.displayName
+                                                ? room.members[1] === context.user.uid
                                                     ? room.name
                                                     : room.nameCreate
                                                 : room.name}
@@ -95,7 +92,8 @@ function SectionBody({ context, setModal }) {
                                                 context.listRoom.map((room) => {
                                                     if (
                                                         room.members.includes(friend) &&
-                                                        room.members.includes(context.user.uid)
+                                                        room.members.includes(context.user.uid) &&
+                                                        room.type === 'friend'
                                                     ) {
                                                         test = true;
                                                     }
@@ -105,7 +103,8 @@ function SectionBody({ context, setModal }) {
                                                     context.listRoom.map((room, index) => {
                                                         if (
                                                             room.members.includes(friend) &&
-                                                            room.members.includes(context.user.uid)
+                                                            room.members.includes(context.user.uid) &&
+                                                            room.type === 'friend'
                                                         ) {
                                                             context.setRoom(index);
                                                             setTabActive(0);
