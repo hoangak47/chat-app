@@ -1,6 +1,6 @@
 import { FileImageOutlined, InfoCircleOutlined } from '@ant-design/icons';
 import { message, notification } from 'antd';
-import React, { useContext, useRef, useState } from 'react';
+import React, { useContext, useState } from 'react';
 import Context from '~/context/context';
 import { storage } from '~/firebase/config';
 import { addDoc } from '~/firebase/services';
@@ -15,7 +15,6 @@ function ModalAddRoom({ modal, setModal }) {
     const handleSubmit = (e) => {
         e.preventDefault();
 
-        console.log(inputImg);
         if (inputName.length > 0) {
             if (inputImg) {
                 const uploadTask = storage.ref(`images/${inputImg.name}`).put(inputImg);

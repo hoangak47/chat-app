@@ -25,6 +25,7 @@ function Login() {
                 uid: user.uid,
                 provider: additionalUserInfo.providerId,
                 keyword: generateKeywords(user.displayName),
+                friend: [],
             });
         }
     };

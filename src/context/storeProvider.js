@@ -27,6 +27,8 @@ function StoreProvider({ children }) {
         setMembers(listRoom[indexRoom]?.members);
     }, [listRoom]);
 
+    const [menu, setMenu] = useState(false);
+
     const data = {
         user,
         setUser,
@@ -42,6 +44,8 @@ function StoreProvider({ children }) {
         setMembers,
         modal,
         setModal,
+        menu,
+        setMenu,
     };
     return <Context.Provider value={data}>{children}</Context.Provider>;
 }

@@ -1,0 +1,31 @@
+.menu {
+    position: absolute;
+    width: 100%;
+    right: 0;
+    background-color: rgba(0, 0, 0, 0.3);
+    opacity: 1;
+
+    transition: all 0.3s ease-in-out;
+
+    &.hide {
+        right: 100%;
+        opacity: 0;
+    }
+
+    .content {
+        width: 90%;
+        height: 100vh;
+        background-color: var(--bg-main);
+        position: relative;
+    }
+}
+
+.close-menu {
+    position: absolute;
+    top: -5px;
+    right: 0;
+    font-size: 2rem;
+    color: var(--color);
+    cursor: pointer;
+    transition: all 0.3s ease-in-out;
+}

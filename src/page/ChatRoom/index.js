@@ -19,6 +19,7 @@ import SectionHeader from './component/nav/sectionHeader';
 import ModalAdd from '../modal/modalAddFriend/modalAdd';
 import ModalAddRoom from '../modal/modalAddRoom/modalAddRoom';
 import Info from './component/content/info/info';
+import Menu from '../modal/menu/menu';
 
 const ChatRoom = () => {
     const context = useContext(Context);
@@ -49,19 +50,23 @@ const ChatRoom = () => {
                     <Footer context={context} />
                 </div>
             ) : (
-                <Alert
-                    message="No room"
-                    type="info"
-                    showIcon
-                    style={{ height: '50px', width: '20%', marginTop: '5%', marginLeft: '50px' }}
-                    closable
-                />
+                <div style={{ width: '100%' }}>
+                    <Alert
+                        message="No room"
+                        type="info"
+                        showIcon
+                        style={{ height: '50px', width: '40%', marginTop: '5%', marginLeft: '50px' }}
+                        closable
+                    />
+                </div>
             )}
-            <Info />
+            {context.listRoom.length !== 0 && <Info />}
 
             <ModalAddRoom modal={context.modal} setModal={context.setModal} />
 
             <ModalAdd modalAdd={modalAdd} setModalAdd={setModalAdd} />
+
+            <Menu theme={theme} setTheme={setTheme} />
         </div>
     );
 };

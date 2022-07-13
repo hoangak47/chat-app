@@ -7,7 +7,7 @@ import { db, storage } from '~/firebase/config';
 
 import './info.scss';
 
-function Info() {
+function Info({ setModalAdd }) {
     const context = useContext(Context);
     const appContext = useContext(AppContext);
 
@@ -176,6 +176,12 @@ function Info() {
                                     </div>
                                 );
                             })}
+                            {context.listRoom[context.indexRoom]?.type !== 'friend' && (
+                                <div className="new-member-mb" onClick={() => setModalAdd(true)}>
+                                    <i className="bi ic-user-add bi-person-plus"></i>
+                                    <span>Add new members</span>
+                                </div>
+                            )}
                         </div>
                     </div>
                     <div>
