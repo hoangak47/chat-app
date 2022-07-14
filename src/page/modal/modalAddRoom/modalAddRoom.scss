@@ -41,7 +41,6 @@
 
     .content {
         width: 40%;
-        height: 70%;
         background-color: var(--hover);
         color: var(--color);
         display: flex;
@@ -50,6 +49,10 @@
         padding: 10px;
         border-radius: 10px;
         transition: all 0.3s ease-in-out;
+
+        .form {
+            margin-bottom: 20px;
+        }
     }
 
     .ic-close {

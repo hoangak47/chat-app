@@ -7,7 +7,7 @@ import { addDoc } from '~/firebase/services';
 
 import './nav.scss';
 
-function SectionBody({ context, setModal }) {
+function SectionBody({ context, setModal, setModalAddFriend }) {
     const appContext = useContext(AppContext);
 
     const tab = ['Chats', 'Friends'];
@@ -16,9 +16,9 @@ function SectionBody({ context, setModal }) {
     return (
         <div className="chat-room-section-body">
             <div className="chat-room-search-content">
-                <div className="chat-room-search">
+                <div className="chat-room-search" onClick={() => setModalAddFriend(true)}>
                     <i className="bi ic-search bi-search"></i>
-                    <input type="text" placeholder="Search" />
+                    <span className="chat-room-search-text">Friends</span>
                 </div>
             </div>
             <div className="tab">
@@ -51,6 +51,7 @@ function SectionBody({ context, setModal }) {
                                         }
                                         onClick={() => {
                                             context.setRoom(index);
+                                            context.setMenu(false);
                                         }}
                                     >
                                         <img
@@ -75,7 +76,10 @@ function SectionBody({ context, setModal }) {
                                 );
                             })
                         ) : (
-                            <li className="no-friend">No Room</li>
+                            <li className="no-friend">
+                                <strong>No Room!</strong>
+                                <span>Please add new room and add members to use.</span>
+                            </li>
                         )}
                     </>
                 ) : (

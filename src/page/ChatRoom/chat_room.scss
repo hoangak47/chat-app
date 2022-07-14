@@ -94,6 +94,7 @@
         background-color: var(--hover);
         border: 1px solid var(--border);
         overflow: hidden;
+        cursor: pointer;
     }
 
     .ic-search {
@@ -180,6 +181,7 @@
     display: flex;
     flex-direction: column;
     padding: 20px 10px 0;
+    position: relative;
 }
 
 .mobile-view {
@@ -191,4 +193,8 @@
 
 .ant-notification-notice-icon {
     display: flex;
+}
+
+.mb-header {
+    display: none;
 }

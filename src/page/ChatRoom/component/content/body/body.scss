@@ -2,6 +2,7 @@
     flex: 1;
     overflow-y: overlay;
     overflow-x: hidden;
+    padding-bottom: 50px;
 
     .mess {
         display: flex;
@@ -18,6 +19,7 @@
             .mess-text {
                 background-color: var(--hover);
                 color: var(--color);
+                overflow-wrap: anywhere;
             }
 
             .text,

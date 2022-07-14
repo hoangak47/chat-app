@@ -66,44 +66,6 @@ function Header({ context, setModalAdd }) {
                                         {member.photoURL ? '' : member.displayName?.charAt(0)?.toUpperCase()}
                                     </Avatar>
                                 </div>
-                                {/* {member.uid === appContext.infoUsers[0]?.uid ? (
-                                    <Tooltip placement="left" title="You">
-                                        <Avatar style={{ cursor: 'pointer' }} src={member.photoURL}>
-                                            {member.photoURL ? '' : member.displayName?.charAt(0)?.toUpperCase()}
-                                        </Avatar>
-                                    </Tooltip>
-                                ) : (
-                                    <>
-                                        {appContext.infoUsers[0]?.friend.includes(member.uid) ? (
-                                            <Tooltip placement="left" title={`${appContext.users[index].displayName}`}>
-                                                <Avatar style={{ cursor: 'pointer' }} src={member.photoURL}>
-                                                    {member.photoURL
-                                                        ? ''
-                                                        : member.displayName?.charAt(0)?.toUpperCase()}
-                                                </Avatar>
-                                            </Tooltip>
-                                        ) : (
-                                            <Popconfirm
-                                                placement="leftBottom"
-                                                title={`Do you want to make friends with ${appContext.users[index].displayName} ?`}
-                                                onConfirm={() => confirm(context.user.uid, member.uid, member.id)}
-                                                okText="Yes"
-                                                cancelText="No"
-                                            >
-                                                <Tooltip
-                                                    placement="left"
-                                                    title={`${appContext.users[index].displayName}`}
-                                                >
-                                                    <Avatar style={{ cursor: 'pointer' }} src={member.photoURL}>
-                                                        {member.photoURL
-                                                            ? ''
-                                                            : member.displayName?.charAt(0)?.toUpperCase()}
-                                                    </Avatar>
-                                                </Tooltip>
-                                            </Popconfirm>
-                                        )}
-                                    </>
-                                )} */}
                             </div>
                         );
                     })}

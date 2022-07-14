@@ -5,7 +5,6 @@ import config from '~/config';
 import Context from '~/context/context';
 
 import { Alert } from 'antd';
-// import 'antd/dist/antd.css';
 
 import 'antd/dist/antd.min.css';
 
@@ -16,10 +15,11 @@ import Footer from './component/content/footer/footer';
 import Header from './component/content/header/header';
 import SectionBody from './component/nav/sectionBody';
 import SectionHeader from './component/nav/sectionHeader';
-import ModalAdd from '../modal/modalAddFriend/modalAdd';
+import ModalAdd from '../modal/modalAddMembers/modalAdd';
 import ModalAddRoom from '../modal/modalAddRoom/modalAddRoom';
 import Info from './component/content/info/info';
 import Menu from '../modal/menu/menu';
+import ModalAddFriend from '../modal/modalAddFriend/modalAddFriend';
 
 const ChatRoom = () => {
     const context = useContext(Context);
@@ -37,20 +37,32 @@ const ChatRoom = () => {
 
     const [modalAdd, setModalAdd] = useState(false);
 
+    useEffect(() => {
+        if (window.innerWidth < 768 && context.listRoom.length === 0) {
+            context.setMenu(true);
+        }
+    }, [context.listRoom]);
+
+    const [modalAddFriend, setModalAddFriend] = useState(false);
+
     return (
         <div className="chat-room">
             <div className="chat-room-section">
                 <SectionHeader context={context} theme={theme} setTheme={setTheme} />
-                <SectionBody context={context} setModal={context.setModal} />
+                <SectionBody context={context} setModal={context.setModal} setModalAddFriend={setModalAddFriend} />
             </div>
             {context.listRoom.length > 0 ? (
                 <div className="chat-room-content">
                     <Header context={context} setModalAdd={setModalAdd} />
                     <Body context={context} />
+
                     <Footer context={context} />
                 </div>
             ) : (
                 <div style={{ width: '100%' }}>
+                    <div className="mb-header">
+                        <Header context={context} setModalAdd={setModalAdd} />
+                    </div>
                     <Alert
                         message="No room"
                         type="info"
@@ -66,7 +78,9 @@ const ChatRoom = () => {
 
             <ModalAdd modalAdd={modalAdd} setModalAdd={setModalAdd} />
 
-            <Menu theme={theme} setTheme={setTheme} />
+            <ModalAddFriend modalAddFriend={modalAddFriend} setModalAddFriend={setModalAddFriend} />
+
+            <Menu theme={theme} setTheme={setTheme} setModalAddFriend={setModalAddFriend} />
         </div>
     );
 };

@@ -15,7 +15,7 @@ function ModalAddRoom({ modal, setModal }) {
     const handleSubmit = (e) => {
         e.preventDefault();
 
-        if (inputName.length > 0) {
+        if (inputName) {
             if (inputImg) {
                 const uploadTask = storage.ref(`images/${inputImg.name}`).put(inputImg);
                 uploadTask.on(
@@ -49,9 +49,9 @@ function ModalAddRoom({ modal, setModal }) {
             }
 
             setModal(false);
-            message.success('Add room success');
             setInputName('');
             setInputImg('');
+            message.success('Add room success');
         } else {
             if (inputImg) {
                 const uploadTask = storage.ref(`images/${inputImg.name}`).put(inputImg);
@@ -77,33 +77,17 @@ function ModalAddRoom({ modal, setModal }) {
                     },
                 );
                 setModal(false);
-                message.success('Add room success');
                 setInputName('');
                 setInputImg('');
+                message.success('Add room success');
             } else {
                 notification.open({
-                    message: 'Please enter message',
+                    message: 'Please enter room name',
                     duration: 2,
                     icon: <InfoCircleOutlined style={{ color: 'var(--color-secondary)' }} />,
                 });
             }
         }
-        // if (inputName.current.value === '') {
-        //     message.info('Please enter the full information');
-        //     return;
-        // } else {
-        //     const data = {
-        //         name: inputName.current.value,
-        //         avatarRoom: inputImg.current.value || context.user.photoURL,
-        //         members: [context.user.uid],
-        //         type: 'room',
-        //     };
-        //     addDoc('rooms', data);
-        //     setModal(false);
-        //     message.success('Add room success');
-        //     inputName.current.value = null;
-        //     inputImg.current.value = null;
-        // }
     };
 
     return (
@@ -118,6 +102,7 @@ function ModalAddRoom({ modal, setModal }) {
                                 className="input"
                                 type="text"
                                 name="name"
+                                value={inputName}
                                 onChange={(e) => setInputName(e.target.value)}
                             />
                             <label>Room Name</label>

@@ -3,7 +3,11 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-    position: relative;
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: var(--bg-main);
 
     .preview-img {
         position: absolute;

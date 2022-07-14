@@ -1,6 +1,6 @@
 import { CameraOutlined, DownOutlined, EditOutlined } from '@ant-design/icons';
 import { Avatar, Button, message } from 'antd';
-import React, { useContext, useState } from 'react';
+import React, { useContext, useRef, useState } from 'react';
 import { AppContext } from '~/context/appProvider';
 import Context from '~/context/context';
 import { db, storage } from '~/firebase/config';
@@ -66,18 +66,19 @@ function Info({ setModalAdd }) {
             document.getElementById('checkEditName').checked = false;
             setInputChangeName('');
             message.success('Update name room success');
+            input.current.checked = false;
 
             return;
         }
     };
 
     const handleCancel = () => {
-        document.getElementById('checkEditName').checked = false;
+        input.current.checked = false;
         setInputChangeName('');
         setImageUpload('');
     };
 
-    const [imageUpload, setImageUpload] = useState();
+    const [imageUpload, setImageUpload] = useState(null);
 
     const handleUploadImage = () => {
         if (!imageUpload) {
@@ -111,6 +112,8 @@ function Info({ setModalAdd }) {
         );
         setImageUpload('');
     };
+
+    const input = useRef(null);
 
     return (
         <div className="info-room">
@@ -152,7 +155,7 @@ function Info({ setModalAdd }) {
                                 return (
                                     <div className="item" key={index}>
                                         <Avatar size="default" src={user.photoURL} style={{ marginRight: '10px' }} />
-                                        <span>{user.displayName}</span>
+                                        <span className="item-name-info">{user.displayName}</span>
                                         {user.uid ===
                                         appContext.infoUsers[0]?.uid ? null : appContext.infoUsers[0]?.friend.includes(
                                               user.uid,
@@ -196,12 +199,22 @@ function Info({ setModalAdd }) {
                         </div>
                         <div className={`list ${activeCustom ? 'active' : ''}`}>
                             {context.listRoom[context.indexRoom]?.type === 'friend' ? (
-                                <div className="item friend">
-                                    <input type="checkbox" id="checkEditName" />
-                                    <label htmlFor="checkEditName" className="label">
+                                <div className="item friend custom">
+                                    <input ref={input} type="checkbox" id="checkEditName" />
+                                    <div
+                                        className="label"
+                                        onClick={() => {
+                                            if (input.current?.checked) {
+                                                input.current.checked = false;
+                                                setInputChangeName('');
+                                            } else {
+                                                input.current.checked = true;
+                                            }
+                                        }}
+                                    >
                                         <EditOutlined className="ic-custom" />
                                         <div className="checkEditName">Edit name</div>
-                                    </label>
+                                    </div>
                                     <input
                                         type="text"
                                         placeholder="Edit name"
@@ -229,12 +242,22 @@ function Info({ setModalAdd }) {
                                 </div>
                             ) : (
                                 <>
-                                    <div className="item friend">
-                                        <input type="checkbox" id="checkEditName" />
-                                        <label htmlFor="checkEditName" className="label">
+                                    <div className="item friend custom">
+                                        <input ref={input} type="checkbox" id="checkEditName" />
+                                        <div
+                                            className="label"
+                                            onClick={() => {
+                                                if (input.current?.checked) {
+                                                    input.current.checked = false;
+                                                    setInputChangeName('');
+                                                } else {
+                                                    input.current.checked = true;
+                                                }
+                                            }}
+                                        >
                                             <EditOutlined className="ic-custom" />
                                             <div className="checkEditName">Edit name</div>
-                                        </label>
+                                        </div>
                                         <input
                                             type="text"
                                             placeholder="Edit name"
@@ -260,39 +283,36 @@ function Info({ setModalAdd }) {
                                             </Button>
                                         </div>
                                     </div>
-                                    <div className="item friend">
-                                        <input
-                                            type="file"
-                                            id="filePicker"
-                                            className="file"
-                                            onChange={(e) => {
-                                                console.log(e.target.files[0]);
-                                                setImageUpload(e.target.files[0]);
-                                            }}
-                                        />
-                                        <label htmlFor="filePicker" className="label">
+                                    <div className="item friend custom">
+                                        <div className="label">
                                             <CameraOutlined className="ic-custom" />
                                             <span>Change Image</span>
-                                        </label>
-                                        {imageUpload && (
-                                            <div className="box-btn upload-img">
-                                                <Button
-                                                    onClick={handleUploadImage}
-                                                    className="btn btn-change-img"
-                                                    type="primary"
-                                                    size={'small'}
-                                                >
-                                                    Change Image
-                                                </Button>
-                                                <Button
-                                                    className="btn btn-cancel"
-                                                    size={'small'}
-                                                    onClick={() => handleCancel()}
-                                                >
-                                                    Cancel
-                                                </Button>
-                                            </div>
-                                        )}
+                                            <input
+                                                type="file"
+                                                id="filePicker"
+                                                className="file"
+                                                onChange={(e) => {
+                                                    setImageUpload(e.target.files[0]);
+                                                }}
+                                            />
+                                        </div>
+                                        <div className={`box-btn upload-img ${imageUpload ? '' : 'hidden'}`}>
+                                            <Button
+                                                onClick={handleUploadImage}
+                                                className="btn btn-change-img"
+                                                type="primary"
+                                                size={'small'}
+                                            >
+                                                Change Image
+                                            </Button>
+                                            <Button
+                                                className="btn btn-cancel"
+                                                size={'small'}
+                                                onClick={() => handleCancel()}
+                                            >
+                                                Cancel
+                                            </Button>
+                                        </div>
                                     </div>
                                 </>
                             )}

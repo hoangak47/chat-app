@@ -7,7 +7,7 @@ import { db } from '~/firebase/config';
 
 import './modalAdd.scss';
 
-function DebounceSelect({ fetchOptions, DebounceTimeout = 700, currMembers, ...props }) {
+export function DebounceSelect({ fetchOptions, DebounceTimeout = 700, currMembers, ...props }) {
     const [fetching, setFetching] = useState(false);
     const [options, setOptions] = useState([]);
 
@@ -47,7 +47,7 @@ function DebounceSelect({ fetchOptions, DebounceTimeout = 700, currMembers, ...p
     );
 }
 
-async function fetchUserList(search, currMembers) {
+export async function fetchUserList(search, currMembers) {
     return db
         .collection('users')
         .where('keyword', 'array-contains', search)
@@ -136,7 +136,7 @@ function ModalAdd({ modalAdd, setModalAdd }) {
     return (
         <>
             <Modal
-                title="Mời thêm thành viên"
+                title="Add new member"
                 visible={modalAdd}
                 onOk={handleOk}
                 onCancel={handleCancel}

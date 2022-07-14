@@ -16,8 +16,22 @@
             border-right: unset;
         }
 
-        .header-menu {
+        .header-menu,
+        .mb-header {
             display: flex;
+
+            .avatar,
+            .ic-info-room {
+                display: none;
+            }
+        }
+
+        .chat-room-content-header {
+            width: 100%;
+        }
+
+        .ant-alert-content .ant-alert-message {
+            font-size: 1.4rem;
         }
     }
 
@@ -45,12 +59,20 @@
             margin-left: 10px;
         }
     }
+}
 
+@media only screen and (max-width: 1024px) {
     .modal-add-room .content {
         width: 80% !important;
-        height: 50vh !important;
     }
 }
 
 @media only screen and (max-height: 500px) {
+    .info-room {
+        .avatar img,
+        .ant-avatar-lg {
+            width: 50px !important;
+            height: 50px !important;
+        }
+    }
 }

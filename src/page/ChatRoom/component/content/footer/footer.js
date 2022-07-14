@@ -58,7 +58,7 @@ function Footer() {
             }
 
             setInputValue('');
-            setImgInput(null);
+            setImgInput('');
             input.current.focus();
             input.current.value = '';
             setShowEmoji(false);
@@ -97,7 +97,7 @@ function Footer() {
             }
 
             setInputValue('');
-            setImgInput(null);
+            setImgInput('');
             input.current.focus();
             input.current.value = '';
             setShowEmoji(false);
