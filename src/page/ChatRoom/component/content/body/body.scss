@@ -19,7 +19,6 @@
             .mess-text {
                 background-color: var(--hover);
                 color: var(--color);
-                overflow-wrap: anywhere;
             }
 
             .text,
@@ -72,5 +71,6 @@
         padding: 10px;
         border-radius: 10px;
         width: fit-content;
+        overflow-wrap: anywhere;
     }
 }

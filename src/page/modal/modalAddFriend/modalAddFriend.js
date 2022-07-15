@@ -10,13 +10,14 @@ function ModalAddFriend({ modalAddFriend, setModalAddFriend }) {
     const [form] = Form.useForm();
 
     const handleOk = () => {
+        console.log(appContext.infoUsers);
         if (value.length === 0) {
             message.error('Please select at least one friend');
             return;
         }
-        const roomRef = db.collection('users').doc(appContext.users[0].id);
+        const roomRef = db.collection('users').doc(appContext.infoUsers[0].id);
         roomRef.update({
-            friend: [...appContext.users[0].friend, ...value.map((v) => v.value)],
+            friend: [...appContext.infoUsers[0].friend, ...value.map((v) => v.value)],
         });
         setModalAddFriend(false);
         setValue([]);
@@ -51,7 +52,7 @@ function ModalAddFriend({ modalAddFriend, setModalAddFriend }) {
                             setValue(newValue);
                         }}
                         style={{ width: '100%' }}
-                        currMembers={appContext.users[0]?.friend}
+                        currMembers={appContext.infoUsers[0]?.friend}
                     ></DebounceSelect>
                 </Form>
             </Modal>

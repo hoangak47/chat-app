@@ -46,7 +46,7 @@ function Info({ setModalAdd }) {
                 name: inputChangeName,
             });
 
-            document.getElementById('checkEditName').checked = false;
+            input.current.checked = false;
             setInputChangeName('');
             message.success('Update name room success');
             return;
@@ -63,7 +63,7 @@ function Info({ setModalAdd }) {
                 });
             }
 
-            document.getElementById('checkEditName').checked = false;
+            input.current.checked = false;
             setInputChangeName('');
             message.success('Update name room success');
             input.current.checked = false;

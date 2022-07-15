@@ -47,7 +47,7 @@ export function DebounceSelect({ fetchOptions, DebounceTimeout = 700, currMember
     );
 }
 
-export async function fetchUserList(search, currMembers) {
+export async function fetchUserList(search, currMembers = []) {
     return db
         .collection('users')
         .where('keyword', 'array-contains', search)
