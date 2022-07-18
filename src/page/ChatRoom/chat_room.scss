@@ -147,6 +147,21 @@
         object-position: center;
     }
 
+    .dot {
+        position: absolute;
+        height: 8px;
+        width: 8px;
+        left: 60%;
+        bottom: 0;
+        border: 1px solid var(--border);
+        border-radius: 50%;
+        background-color: green;
+
+        &.off {
+            background-color: red;
+        }
+    }
+
     .chat-room-list-item-name {
         -webkit-box-orient: vertical;
         -webkit-line-clamp: 1;

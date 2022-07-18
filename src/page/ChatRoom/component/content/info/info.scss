@@ -32,6 +32,11 @@
         height: 100px;
     }
 
+    .detail {
+        width: 100%;
+        text-align: center;
+    }
+
     .detail span {
         font-size: 2rem;
         font-weight: 500;
@@ -64,16 +69,15 @@
     }
 
     .list {
-        height: 0;
         overflow: hidden;
         opacity: 0;
 
-        transition: all 0.5s ease-in-out;
+        transition: all 0.3s ease-in-out;
         overflow-y: overlay;
 
         &.active {
-            height: unset;
             opacity: 1;
+            max-height: 400px;
         }
     }
 
@@ -82,7 +86,8 @@
         cursor: pointer;
         position: relative;
         display: flex;
-        align-items: center;
+        justify-content: center;
+        flex-direction: column;
 
         &.custom {
             display: block;
@@ -94,29 +99,16 @@
         }
 
         &:hover .modal-add-friend {
-            display: flex;
-        }
-
-        .item-name-info {
-            -webkit-box-orient: vertical;
-            -webkit-line-clamp: 1;
-            display: -webkit-box;
-            overflow: hidden;
+            height: 40px;
+            opacity: 1;
         }
 
         .modal-add-friend {
-            display: none;
+            display: flex;
+            height: 0;
             align-items: center;
-            justify-content: center;
-            position: absolute;
-            color: var(--color);
-            border-radius: 5px;
-
-            top: 0;
-            bottom: 0;
-            right: 0;
-            left: 0;
-            background-color: var(--hover);
+            transition: all 0.3s ease-in-out;
+            opacity: 0;
         }
 
         .ant-avatar {
@@ -196,4 +188,19 @@ input#filePicker {
 
 .hidden {
     display: none;
+}
+
+.member-info {
+    position: relative;
+
+    .item-name-info {
+        -webkit-box-orient: vertical;
+        -webkit-line-clamp: 1;
+        display: -webkit-box;
+        overflow: hidden;
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+        left: 42px;
+    }
 }

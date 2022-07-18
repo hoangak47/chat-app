@@ -7,9 +7,11 @@ import './footer.scss';
 import { message, notification } from 'antd';
 import { CloseCircleOutlined, FileImageOutlined, InfoCircleOutlined } from '@ant-design/icons';
 import { storage } from '~/firebase/config';
+import { AppContext } from '~/context/appProvider';
 
 function Footer() {
     const context = useContext(Context);
+    const appContext = useContext(AppContext);
 
     const [inputValue, setInputValue] = React.useState('');
 
@@ -104,6 +106,39 @@ function Footer() {
         }
     };
 
+    const checkSubmit = (e) => {
+        let index = 0;
+        let check = false;
+        if (context.listRoom[context.indexRoom].type === 'friend') {
+            const indexUser = context.listRoom[context.indexRoom].members.indexOf(appContext.infoUsers[0].uid);
+            if (indexUser === 1) {
+                index = 0;
+            } else {
+                index = 1;
+            }
+            appContext.infoUsers[0].friend.forEach((friend) => {
+                if (friend === context.listRoom[context.indexRoom].members[index]) {
+                    check = true;
+                }
+            });
+            if (check) {
+                handleSubmit(e);
+                return;
+            }
+            notification.open({
+                message: 'You are not friend with this user',
+                description: '',
+                icon: <InfoCircleOutlined style={{ color: '#108ee9' }} />,
+            });
+            input.current.focus();
+            input.current.value = '';
+            setInputValue('');
+            setImgInput('');
+        } else {
+            handleSubmit(e);
+        }
+    };
+
     const [showEmoji, setShowEmoji] = useState(false);
 
     const onEmojiClick = (event, emojiObject) => {
@@ -111,6 +146,17 @@ function Footer() {
     };
 
     const [imgInput, setImgInput] = useState(null);
+
+    const emojiRef = useRef(null);
+    document.onclick = (e) => {
+        if (showEmoji) {
+            if (e.target.closest('.emoji-picker-react') || e.target.closest('.ic-emoji')) {
+                setShowEmoji(true);
+            } else {
+                setShowEmoji(false);
+            }
+        }
+    };
 
     return (
         <div className="chat-room-content-footer">
@@ -129,7 +175,7 @@ function Footer() {
                     onChange={(e) => handleInput(e)}
                     onKeyDown={(e) => {
                         if (e.key === 'Enter') {
-                            handleSubmit();
+                            checkSubmit(e);
                         }
                     }}
                 />
@@ -159,12 +205,16 @@ function Footer() {
                     }}
                 ></i>
                 {showEmoji && (
-                    <div style={{ position: 'absolute', bottom: '150%', right: '0' }}>
+                    <div
+                        ref={emojiRef}
+                        className="emoji-ref"
+                        style={{ position: 'absolute', bottom: '150%', right: '0' }}
+                    >
                         <Picker onEmojiClick={onEmojiClick} />
                     </div>
                 )}
             </div>
-            <button className="send" onClick={(e) => handleSubmit(e)}>
+            <button className="send" onClick={(e) => checkSubmit(e)}>
                 <i className="bi ic-send bi-send"></i>
             </button>
         </div>

@@ -1,6 +1,6 @@
 import { CameraOutlined, DownOutlined, EditOutlined } from '@ant-design/icons';
 import { Avatar, Button, message } from 'antd';
-import React, { useContext, useRef, useState } from 'react';
+import React, { useContext, useEffect, useRef, useState } from 'react';
 import { AppContext } from '~/context/appProvider';
 import Context from '~/context/context';
 import { db, storage } from '~/firebase/config';
@@ -14,27 +14,42 @@ function Info({ setModalAdd }) {
     const [activeMember, setActiveMember] = useState(false);
     const [activeCustom, setActiveCustom] = useState(false);
 
-    const handleMakeFriend = (meid, uid, memberID) => {
-        if (meid) {
-            const userRef = db.collection('users').doc(appContext.infoUsers[0].id);
+    const handleMakeFriend = (meId, uid, docID) => {
+        const userRef = db.collection('users').doc(appContext.infoUsers[0].id);
 
-            userRef.update({
-                friend: [...appContext.infoUsers[0].friend, uid],
-            });
+        userRef.update({
+            friend: [...appContext.infoUsers[0].friend, uid],
+        });
 
-            const friendRef = db.collection('users').doc(memberID);
+        const friendRef = db.collection('users').doc(docID);
 
-            const infoFriendRef = db.collection('users').where('uid', '==', uid);
-            infoFriendRef.get().then((snapshot) => {
-                snapshot.forEach((doc) => {
-                    friendRef.update({
-                        friend: [...doc.data().friend, meid],
-                    });
+        appContext.users.forEach((user) => {
+            if (user.uid === uid) {
+                friendRef.update({
+                    friend: [...user.friend, meId],
                 });
-            });
+            }
+        });
 
-            message.success('Make friend success');
-        }
+        message.success('Make friend success');
+    };
+
+    const handleUnFriend = (meId, uid, docID) => {
+        appContext.infoUsers[0].friend.splice(appContext.infoUsers[0].friend.indexOf(uid), 1);
+        const userRef = db.collection('users').doc(appContext.infoUsers[0].id);
+        userRef.update({
+            friend: appContext.infoUsers[0].friend,
+        });
+
+        const friendRef = db.collection('users').doc(docID);
+        appContext.users.forEach((user) => {
+            if (user.uid === uid) {
+                user.friend.splice(user.friend.indexOf(meId), 1);
+                friendRef.update({
+                    friend: user.friend,
+                });
+            }
+        });
     };
 
     const [inputChangeName, setInputChangeName] = useState('');
@@ -114,6 +129,16 @@ function Info({ setModalAdd }) {
     };
 
     const input = useRef(null);
+    const list = useRef(null);
+    const item = useRef(null);
+
+    useEffect(() => {
+        if (activeMember) {
+            list.current.style.height = `${appContext.users.length * 42}px`;
+        } else {
+            list.current.style.height = '0px';
+        }
+    }, [activeMember, appContext.users]);
 
     return (
         <div className="info-room">
@@ -150,30 +175,57 @@ function Info({ setModalAdd }) {
                             <h3>Members chat</h3>
                             {activeMember ? <DownOutlined rotate={180} /> : <DownOutlined />}
                         </div>
-                        <div className={`list ${activeMember ? 'active' : ''}`}>
+                        <div ref={list} className={`list ${activeMember ? 'active' : ''}`}>
                             {appContext.users.map((user, index) => {
                                 return (
-                                    <div className="item" key={index}>
-                                        <Avatar size="default" src={user.photoURL} style={{ marginRight: '10px' }} />
-                                        <span className="item-name-info">{user.displayName}</span>
+                                    <div
+                                        ref={item}
+                                        className="item"
+                                        key={index}
+                                        onMouseEnter={() => {
+                                            if (user.uid !== appContext.infoUsers[0]?.uid) {
+                                                list.current.style.height = `${appContext.users.length * 42 + 40}px`;
+                                            }
+                                        }}
+                                        onMouseLeave={() => {
+                                            if (user.id !== context.user.uid) {
+                                                list.current.style.height = `${appContext.users.length * 42}px`;
+                                            }
+                                        }}
+                                    >
+                                        <div className="member-info">
+                                            <Avatar size="default" src={user.photoURL} />
+                                            <span className="item-name-info">{user.displayName}</span>
+                                        </div>
                                         {user.uid ===
                                         appContext.infoUsers[0]?.uid ? null : appContext.infoUsers[0]?.friend.includes(
                                               user.uid,
-                                          ) ? null : (
-                                            <div
-                                                className="modal-add-friend"
-                                                onClick={() => {
-                                                    if (user.uid === appContext.infoUsers[0]?.uid) {
-                                                        return;
-                                                    }
-                                                    if (appContext.infoUsers[0]?.friend.includes(user.uid)) {
-                                                        message.error('You are friend');
-                                                        return;
-                                                    }
-                                                    handleMakeFriend(context.user.uid, user.uid, user.id);
-                                                }}
-                                            >
-                                                Make friends to chat
+                                          ) ? (
+                                            <div className="modal-add-friend">
+                                                <Button
+                                                    className="btn"
+                                                    type="primary"
+                                                    danger
+                                                    size={'small'}
+                                                    onClick={() => {
+                                                        handleUnFriend(context.user.uid, user.uid, user.id);
+                                                    }}
+                                                >
+                                                    Unfriend
+                                                </Button>
+                                            </div>
+                                        ) : (
+                                            <div className="modal-add-friend">
+                                                <Button
+                                                    className="btn"
+                                                    type="primary"
+                                                    size={'small'}
+                                                    onClick={() => {
+                                                        handleMakeFriend(context.user.uid, user.uid, user.id);
+                                                    }}
+                                                >
+                                                    Make friend
+                                                </Button>
                                             </div>
                                         )}
                                     </div>

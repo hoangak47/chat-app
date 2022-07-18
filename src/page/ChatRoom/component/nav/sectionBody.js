@@ -13,6 +13,46 @@ function SectionBody({ context, setModal, setModalAddFriend }) {
     const tab = ['Chats', 'Friends'];
     const [tabActive, setTabActive] = useState(0);
 
+    const handleClickFriend = (friend, user) => {
+        let test;
+        context.listRoom.map((room) => {
+            if (room.members.includes(friend) && room.members.includes(context.user.uid) && room.type === 'friend') {
+                test = true;
+            }
+        });
+
+        if (test) {
+            context.listRoom.map((room, index) => {
+                if (
+                    room.members.includes(friend) &&
+                    room.members.includes(context.user.uid) &&
+                    room.type === 'friend'
+                ) {
+                    context.setRoom(index);
+                    setTabActive(0);
+                }
+                if (!room.members.includes(friend) && !room.members.includes(context.user.uid)) {
+                    alert('You are not in this room');
+                }
+            });
+        } else {
+            context.setNameRoom(user.displayName);
+            context.setAvatarRoom(user.photoURL);
+            context.setMembers([friend]);
+            const data = {
+                type: 'friend',
+                name: user.displayName,
+                avatarRoom: user.photoURL || 'https://graph.facebook.com/3648135422079660/picture',
+                members: [friend, context.user.uid],
+                nameCreate: context.user.displayName,
+                avatarRoomCreate: context.user.photoURL,
+            };
+            addDoc('rooms', data);
+            setTabActive(0);
+            context.setRoom(context.listRoom.length);
+        }
+    };
+
     return (
         <div className="chat-room-section-body">
             <div className="chat-room-search-content">
@@ -54,17 +94,21 @@ function SectionBody({ context, setModal, setModalAddFriend }) {
                                             context.setMenu(false);
                                         }}
                                     >
-                                        <img
-                                            className="chat-room-list-item-avatar"
-                                            src={
-                                                room.type === 'friend'
-                                                    ? room.members[1] === context.user.uid
-                                                        ? room.avatarRoom
-                                                        : room.avatarRoomCreate
-                                                    : room.avatarRoom
-                                            }
-                                            alt="user"
-                                        />
+                                        <div style={{ position: 'relative' }}>
+                                            <img
+                                                className="chat-room-list-item-avatar"
+                                                src={
+                                                    room.type === 'friend'
+                                                        ? room.members[1] === context.user.uid
+                                                            ? room.avatarRoom
+                                                            : room.avatarRoomCreate
+                                                        : room.avatarRoom
+                                                }
+                                                alt="user"
+                                            />
+
+                                            {/* <div className="dot"></div> */}
+                                        </div>
                                         <span className="chat-room-list-item-name ">
                                             {room.type === 'friend'
                                                 ? room.members[1] === context.user.uid
@@ -91,60 +135,16 @@ function SectionBody({ context, setModal, setModalAddFriend }) {
                                         <li
                                             key={friend}
                                             className="chat-room-list-item"
-                                            onClick={() => {
-                                                let test;
-                                                context.listRoom.map((room) => {
-                                                    if (
-                                                        room.members.includes(friend) &&
-                                                        room.members.includes(context.user.uid) &&
-                                                        room.type === 'friend'
-                                                    ) {
-                                                        test = true;
-                                                    }
-                                                });
-
-                                                if (test) {
-                                                    context.listRoom.map((room, index) => {
-                                                        if (
-                                                            room.members.includes(friend) &&
-                                                            room.members.includes(context.user.uid) &&
-                                                            room.type === 'friend'
-                                                        ) {
-                                                            context.setRoom(index);
-                                                            setTabActive(0);
-                                                        }
-                                                        if (
-                                                            !room.members.includes(friend) &&
-                                                            !room.members.includes(context.user.uid)
-                                                        ) {
-                                                            alert('You are not in this room');
-                                                        }
-                                                    });
-                                                } else {
-                                                    context.setNameRoom(user.displayName);
-                                                    context.setAvatarRoom(user.photoURL);
-                                                    context.setMembers([friend]);
-                                                    const data = {
-                                                        type: 'friend',
-                                                        name: user.displayName,
-                                                        avatarRoom:
-                                                            user.photoURL ||
-                                                            'https://graph.facebook.com/3648135422079660/picture',
-                                                        members: [friend, context.user.uid],
-                                                        nameCreate: context.user.displayName,
-                                                        avatarRoomCreate: context.user.photoURL,
-                                                    };
-                                                    addDoc('rooms', data);
-                                                    setTabActive(0);
-                                                    context.setRoom(context.listRoom.length);
-                                                }
-                                            }}
+                                            onClick={() => handleClickFriend(friend, user)}
                                         >
-                                            <img
-                                                className="chat-room-list-item-avatar"
-                                                src={user.photoURL}
-                                                alt="user"
-                                            />
+                                            <div>
+                                                <img
+                                                    className="chat-room-list-item-avatar"
+                                                    src={user.photoURL}
+                                                    alt="user"
+                                                />
+                                                {/* <div className="dot"></div> */}
+                                            </div>
                                             <span className="chat-room-list-item-name ">{user.displayName}</span>
                                         </li>
                                     );

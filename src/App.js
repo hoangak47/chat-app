@@ -1,7 +1,7 @@
 import './App.scss';
 import './responsive.scss';
-import { auth } from './firebase/config';
 import Main from './page';
+import { auth } from './firebase/config';
 
 function App() {
     window.addEventListener('unload', function (event) {

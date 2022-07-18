@@ -116,7 +116,7 @@ function ModalAdd({ modalAdd, setModalAdd }) {
             }
             return;
         }
-        const roomRef = db.collection('rooms').doc(context.listRoom[context.indexRoom].id);
+        const roomRef = db.collection('rooms').doc(context.listRoom[context.indexRoom]?.id);
         roomRef.update({
             members: [...context.listRoom[context.indexRoom].members, ...value.map((v) => v.value)],
         });
