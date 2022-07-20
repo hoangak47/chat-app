@@ -21,11 +21,11 @@ function Footer() {
 
     const input = useRef(null);
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         if (inputValue.length > 0) {
             if (imgInput) {
                 const uploadTask = storage.ref(`images/${imgInput.name}`).put(imgInput);
-                uploadTask.on(
+                await uploadTask.on(
                     'state_changed',
                     (snapshot) => {},
                     (error) => {
@@ -49,7 +49,7 @@ function Footer() {
                     },
                 );
             } else {
-                addDoc('messages', {
+                await addDoc('messages', {
                     content: inputValue,
                     uid: context.user.uid,
                     photoURL: context.user.photoURL,
@@ -67,7 +67,7 @@ function Footer() {
         } else {
             if (imgInput) {
                 const uploadTask = storage.ref(`images/${imgInput.name}`).put(imgInput);
-                uploadTask.on(
+                await uploadTask.on(
                     'state_changed',
                     (snapshot) => {},
                     (error) => {
