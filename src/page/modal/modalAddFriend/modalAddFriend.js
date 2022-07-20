@@ -10,11 +10,30 @@ function ModalAddFriend({ modalAddFriend, setModalAddFriend }) {
     const [form] = Form.useForm();
 
     const handleOk = () => {
-        console.log(appContext.infoUsers);
         if (value.length === 0) {
             message.error('Please select at least one friend');
             return;
         }
+        // const as = db.collection('users').where('uid', '==', value[0].value);
+        // as.get().then((snapshot) => {
+        //     snapshot.forEach((doc) => {
+        //         console.log(doc.data());
+        //         console.log(doc.id);
+        //     });
+        // });
+
+        value.map((item) => {
+            const getKey = db.collection('users').where('uid', '==', item.value);
+            getKey.get().then((snapshot) => {
+                snapshot.forEach((doc) => {
+                    db.collection('users')
+                        .doc(doc.id)
+                        .update({
+                            friend: [...doc.data().friend, appContext.infoUsers[0].uid],
+                        });
+                });
+            });
+        });
         const roomRef = db.collection('users').doc(appContext.infoUsers[0].id);
         roomRef.update({
             friend: [...appContext.infoUsers[0].friend, ...value.map((v) => v.value)],
