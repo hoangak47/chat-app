@@ -43,7 +43,6 @@ function Info({ setModalAdd }) {
 
         const friendRef = db.collection('users').doc(docID);
         appContext.users.forEach((user) => {
-            console.log(user);
             if (user.uid === uid) {
                 user.friend.splice(user.friend.indexOf(meId), 1);
                 friendRef.update({

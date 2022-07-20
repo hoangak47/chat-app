@@ -14,13 +14,6 @@ function ModalAddFriend({ modalAddFriend, setModalAddFriend }) {
             message.error('Please select at least one friend');
             return;
         }
-        // const as = db.collection('users').where('uid', '==', value[0].value);
-        // as.get().then((snapshot) => {
-        //     snapshot.forEach((doc) => {
-        //         console.log(doc.data());
-        //         console.log(doc.id);
-        //     });
-        // });
 
         value.map((item) => {
             const getKey = db.collection('users').where('uid', '==', item.value);
