@@ -2,12 +2,16 @@
 import { Alert, Avatar, Button, Form, message, Modal, Select, Space, Spin } from 'antd';
 import { debounce } from 'lodash';
 import React, { useContext, useMemo, useState } from 'react';
+import { AppContext } from '~/context/appProvider';
 import Context from '~/context/context';
 import { db } from '~/firebase/config';
 
 import './modalAdd.scss';
 
 export function DebounceSelect({ fetchOptions, DebounceTimeout = 700, currMembers, ...props }) {
+    const appContext = useContext(AppContext);
+    const uid = appContext.infoUsers[0]?.uid;
+
     const [fetching, setFetching] = useState(false);
     const [options, setOptions] = useState([]);
 
@@ -16,14 +20,14 @@ export function DebounceSelect({ fetchOptions, DebounceTimeout = 700, currMember
             setOptions([]);
             setFetching(true);
 
-            fetchOptions(value, currMembers).then((newOptions) => {
+            fetchOptions(value, currMembers, uid).then((newOptions) => {
                 setOptions(newOptions);
                 setFetching(false);
             });
         };
 
         return debounce(loadingOptions, DebounceTimeout);
-    }, [fetchOptions, DebounceTimeout, currMembers]);
+    }, [fetchOptions, DebounceTimeout, currMembers, uid]);
 
     return (
         <Select
@@ -47,7 +51,8 @@ export function DebounceSelect({ fetchOptions, DebounceTimeout = 700, currMember
     );
 }
 
-export async function fetchUserList(search, currMembers = []) {
+export async function fetchUserList(search, currMembers = [], uid) {
+    const current = [...currMembers, uid];
     return db
         .collection('users')
         .where('keyword', 'array-contains', search)
@@ -63,12 +68,13 @@ export async function fetchUserList(search, currMembers = []) {
                     };
                     return a;
                 })
-                .filter((v) => !currMembers.includes(v.value));
+                .filter((v) => !current.includes(v.value));
         });
 }
 
 function ModalAdd({ modalAdd, setModalAdd }) {
     const context = useContext(Context);
+    const appContext = useContext(AppContext);
     const [value, setValue] = useState([]);
     const [form] = Form.useForm();
 
